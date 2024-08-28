@@ -8,10 +8,11 @@ void publishActionSensorDiscoveryMessage(String deviceId)
 
   JsonArray availability = doc["availability"].to<JsonArray>();
   JsonObject availability_0 = availability.add<JsonObject>();
+
   availability_0["topic"] = "espnow2mqtt/bridge/state";
   availability_0["value_template"] = "{{ value_json.state }}";
 
-  JsonObject device = doc["device"].add<JsonObject>();
+  JsonObject device = doc["device"].to<JsonObject>();
   device["identifiers"][0] = deviceId;
   device["manufacturer"] = "WiZ";
   device["model"] = "WizMote";
@@ -41,10 +42,11 @@ void publishBatterySensorDiscoveryMessage(String deviceId)
 
   JsonArray availability = doc["availability"].to<JsonArray>();
   JsonObject availability_0 = availability.add<JsonObject>();
+
   availability_0["topic"] = "espnow2mqtt/bridge/state";
   availability_0["value_template"] = "{{ value_json.state }}";
 
-  JsonObject device = doc["device"].add<JsonObject>();
+  JsonObject device = doc["device"].to<JsonObject>();
   device["identifiers"][0] = deviceId;
   device["manufacturer"] = "WiZ";
   device["model"] = "WizMote";
@@ -68,6 +70,42 @@ void publishBatterySensorDiscoveryMessage(String deviceId)
   publishMqtt(topic.c_str(), payload.c_str(), true);
 }
 
+void publishLinkQualitySensorDiscoveryMessage(String deviceId)
+{
+  String topic = String(MQTT_DISCOVERY_TOPIC_SENSOR) + "/" + deviceId + "/linkquality/config";
+
+  JsonDocument doc;
+
+  JsonArray availability = doc["availability"].to<JsonArray>();
+  JsonObject availability_0 = availability.add<JsonObject>();
+
+  availability_0["topic"] = "espnow2mqtt/bridge/state";
+  availability_0["value_template"] = "{{ value_json.state }}";
+
+  JsonObject device = doc["device"].to<JsonObject>();
+  device["identifiers"][0] = deviceId;
+  device["manufacturer"] = "WiZ";
+  device["model"] = "WizMote";
+  device["sw_version"] = "1.0";
+  device["name"] = "WizMote " + deviceId;
+
+  doc["device_class"] = "signal_strength";
+  doc["entity_category"] = "diagnostic";
+  doc["enabled_by_default"] = false;
+  doc["state_class"] = "measurement";
+  doc["object_id"] = deviceId + "_linkquality";
+  doc["state_topic"] = String(MQTT_TOPIC) + "/" + deviceId;
+  doc["unique_id"] = deviceId + "_linkquality";
+  doc["unit_of_measurement"] = "dBm";
+  doc["value_template"] = "{{ value_json.linkquality }}";
+  doc["platform"] = "mqtt";
+
+  String payload;
+  serializeJson(doc, payload);
+
+  publishMqtt(topic.c_str(), payload.c_str(), true);
+}
+
 void publishAutomationDiscoveryMessage(String deviceId, String action)
 {
   String topic = String(MQTT_DISCOVERY_TOPIC_AUTOMATION) + "/" + deviceId + "/action_" + action + "/config";
@@ -76,14 +114,14 @@ void publishAutomationDiscoveryMessage(String deviceId, String action)
 
   doc["automation_type"] = "trigger";
 
-  JsonObject device = doc["device"].add<JsonObject>();
+  JsonObject device = doc["device"].to<JsonObject>();
   device["identifiers"][0] = deviceId;
   device["manufacturer"] = "WiZ";
   device["model"] = "WizMote";
   device["sw_version"] = "1.0";
   device["name"] = "WizMote " + deviceId;
 
-  JsonObject origin = doc["origin"].add<JsonObject>();
+  JsonObject origin = doc["origin"].to<JsonObject>();
   origin["sw_version"] = "1.0";
   origin["name"] = "WizMote to MQTT";
 

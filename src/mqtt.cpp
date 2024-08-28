@@ -120,6 +120,9 @@ void loopMqtt()
         case MessageType::BATTERY:
             publishBatterySensorDiscoveryMessage(String(message.device.c_str()));
             break;
+        case MessageType::LINK_QUALITY:
+            publishLinkQualitySensorDiscoveryMessage(String(message.device.c_str()));
+            break;
         case MessageType::AUTOMATION:
             publishAutomationDiscoveryMessage(String(message.device.c_str()), String(message.action.c_str()));
             break;

@@ -47,6 +47,7 @@ void handleRemoteData(uint8_t *incomingData, size_t len, signed int rssi)
     {
         messageQueue.push({"action", lastSignalSrc, MessageType::ACTION});
         messageQueue.push({"battery", lastSignalSrc, MessageType::BATTERY});
+        messageQueue.push({"linkquality", lastSignalSrc, MessageType::LINK_QUALITY});
         messageQueue.push({"turn_on", lastSignalSrc, MessageType::AUTOMATION});
         messageQueue.push({"turn_off", lastSignalSrc, MessageType::AUTOMATION});
         messageQueue.push({"button_1", lastSignalSrc, MessageType::AUTOMATION});
@@ -102,7 +103,7 @@ void handleRemoteData(uint8_t *incomingData, size_t len, signed int rssi)
         return;
     }
 
-    StaticJsonDocument<256> doc;
+    JsonDocument doc;
 
     doc["action"] = message;
     doc["linkquality"] = rssi;

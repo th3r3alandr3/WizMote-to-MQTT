@@ -8,6 +8,7 @@ void espNowSentCB(uint8_t *mac_addr, uint8_t status);
 // homeassistant.cpp
 void publishActionSensorDiscoveryMessage(String deviceId);
 void publishBatterySensorDiscoveryMessage(String deviceId);
+void publishLinkQualitySensorDiscoveryMessage(String deviceId);
 void publishAutomationDiscoveryMessage(String deviceId, String action);
 
 // mqtt.cpp

@@ -46,7 +46,8 @@ enum MessageType
 {
   ACTION,
   BATTERY,
-  AUTOMATION
+  AUTOMATION,
+  LINK_QUALITY
 };
 struct Message {
     std::string action;
