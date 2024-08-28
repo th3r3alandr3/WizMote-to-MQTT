@@ -1,0 +1,12 @@
+.cache
+.clang-format
+.direnv
+.DS_Store
+.idea
+.pio
+.pioenvs
+.piolibdeps
+.vscode
+
+.env
+/build_output/
