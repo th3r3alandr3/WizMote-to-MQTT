@@ -42,6 +42,11 @@ void handleRemoteData(uint8_t *incomingData, size_t len, signed int rssi)
 
     uint32_t curSeq = incoming->seq[0] | (incoming->seq[1] << 8) | (incoming->seq[2] << 16) | (incoming->seq[3] << 24);
 
+    if (curSeq == lastSeq)
+    {
+        return;
+    }
+
     // Publish discovery message if the device is not already published
     if (publishedDevices.find(lastSignalSrc) == publishedDevices.end())
     {
@@ -120,7 +125,6 @@ void handleRemoteData(uint8_t *incomingData, size_t len, signed int rssi)
     publishMqtt(topic.c_str(), payload.c_str(), true);
 
     doc["action"] = "";
-    payload = "";
     serializeJson(doc, payload);
     publishMqtt(topic.c_str(), payload.c_str(), true);
 
